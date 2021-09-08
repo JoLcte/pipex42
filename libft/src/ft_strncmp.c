@@ -1,50 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/08 14:10:45 by jlecomte         ###   ########.fr       */
+/*   Created: 2020/11/19 18:06:32 by jlecomte          #+#    #+#             */
+/*   Updated: 2021/09/08 14:10:28 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-# include "libft.h"
-
-# ifndef BONUS
-#  define BONUS 0
-# endif
-
-/*
-**	PARSING
-*/
-
-typedef struct s_data
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	**cmds;
-	char	*paths;
-	int	fd_in;
-	int	fd_out;
-	int	nb_cmd;
-	int	idx;
-
-}	t_data;
-
-/*
-**	FUNCTIONS
-*/
-
-char 	*get_path(char **env);
-int	get_mini_path(char *env);
-
-
-#endif
+	if (!n)
+		return (0);
+	while (n-- && *s1 == *s2)
+	{
+		if (!n || !*s1)
+			return (0);
+		++s1;
+		++s2;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}

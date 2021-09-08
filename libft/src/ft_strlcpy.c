@@ -1,50 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/08 14:10:45 by jlecomte         ###   ########.fr       */
+/*   Created: 2020/11/19 18:05:46 by jlecomte          #+#    #+#             */
+/*   Updated: 2021/09/08 14:45:51 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-# include "libft.h"
-
-# ifndef BONUS
-#  define BONUS 0
-# endif
-
-/*
-**	PARSING
-*/
-
-typedef struct s_data
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	char	**cmds;
-	char	*paths;
-	int	fd_in;
-	int	fd_out;
-	int	nb_cmd;
-	int	idx;
+	const char	*p_start = src;
 
-}	t_data;
-
-/*
-**	FUNCTIONS
-*/
-
-char 	*get_path(char **env);
-int	get_mini_path(char *env);
-
-
-#endif
+	if (!dst || !src)
+		return (0);
+	while ((size > 1) && *src)
+	{
+		*dst++ = *src++;
+		size--;
+	}
+	if (size != 0)
+		*dst = '\0';
+	while (*src)
+		src++;
+	return ((size_t)(src - p_start));
+}
