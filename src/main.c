@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/08 14:05:22 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/09 18:10:35 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	init_data(t_data *data, int bonus, char **av, char **envp)
 	data->fd_out = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	data->paths = get_path(envp);
 	data->cmds = av + 2;
+	data->envp = envp;
 	if (!data->cmds || !data->paths || data->fd_in == -1 || 
 			data->fd_out == -1)
 	{

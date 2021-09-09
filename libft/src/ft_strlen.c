@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/19 18:05:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 17:45:42 by jlecomte         ###   ########.fr       */
+/*   Created: 2020/11/19 18:06:09 by jlecomte          #+#    #+#             */
+/*   Updated: 2021/09/09 17:26:56 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, char c)
+int	ft_strlen(const char *s)
 {
-	while (*s != c)
-		++s;
-	if (*s == c)
-		return ((char *)s);
-	if (c == 0)
-		return ((char *)s);
-	return (NULL);
+	int count;
+
+	count = 0;
+	while (*s++)
+		count++;
+	return (count);
 }

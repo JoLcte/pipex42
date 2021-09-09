@@ -6,37 +6,48 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/08 14:10:45 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/09 18:13:45 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 # include "libft.h"
 
 # ifndef BONUS
 #  define BONUS 0
 # endif
+# ifndef BUSIZ
+#  define BUFSIZ 1024
+# endif
 
 /*
-**	PARSING
+**	DATA HANDLE
 */
+
+typedef struct s_buf
+{
+	char 	*err;
+	int 	len;
+}	t_buf;
 
 typedef struct s_data
 {
 	char	**cmds;
 	char	*paths;
+	char	**envp;
 	int	fd_in;
 	int	fd_out;
 	int	nb_cmd;
 	int	idx;
-
 }	t_data;
 
 /*
@@ -44,7 +55,10 @@ typedef struct s_data
 */
 
 char 	*get_path(char **env);
-int	get_mini_path(char *env);
+char	*get_mini_path(char *path, int *i);
+char	*get_cmd_path(char *cmd, char *paths);
 
+void	exe_cmd(t_data *data, int i);
+void	exe_check_err(char **cmd, char *path, char **envp);
 
 #endif

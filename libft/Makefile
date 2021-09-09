@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/19 17:58:56 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/08 14:46:13 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/09 17:27:19 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC_F = add_on_pipex.c \
 	ft_strchr.c \
 	ft_strncmp.c \
 	ft_strlcpy.c \
+	ft_strlen.c \
         ft_strtrim.c	
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_F))
