@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 18:07:44 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/15 20:55:20 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ char	*get_mini_path(char *path, int *i)
 char	*get_path(char **env)
 {
 	while (*env)
-		if (ft_strncmp("PATH=", *env, 5))
-			++env;
+	{
+		if (!ft_strncmp("PATH=", *env, 5))
+			break;
+		++env;
+	}
 	if (*env)
 		return (*env + 5);
 	else

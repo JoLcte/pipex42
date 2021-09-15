@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 14:47:25 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 17:30:28 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:01:01 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		*s++ = *s1++;
 	while (*s2)
 		*s++ = *s2++;
-	*s = '\0';
+	*s = 0;
 	return (s - len);
 }

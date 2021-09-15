@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/19 17:58:56 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/09 17:27:19 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/14 16:01:23 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC_DIR = src
 SRC_F = add_on_pipex.c \
 	ft_split_pipex.c \
 	ft_strchr.c \
+	ft_strjoin.c \
 	ft_strncmp.c \
 	ft_strlcpy.c \
 	ft_strlen.c \

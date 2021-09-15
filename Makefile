@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/08/27 15:11:22 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/15 17:11:26 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "\e[38;5;161mRemoved - $(NAME) -"
 
-bonus: CCF += -D BONUS)
+bonus: CCF += -D BONUS=1
 bonus: all
 
 re: fclean all

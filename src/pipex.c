@@ -6,20 +6,20 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 18:11:58 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:16:44 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	check_close(int *fds, int n)
+static void	check_close(int *fds, int size)
 {
 	char *err;
 	int len_err;
 
-	while (n--)
+	while (size--)
 	{
-		if (close(fds[n]))
+		if (close(fds[size]))
 		{
 			err = strerror(errno);
 			len_err = ft_strlen(err);
@@ -86,6 +86,7 @@ int	pipex(t_data *data)
 		waitpid(new_pid, &status, 0);
 	}
 	check_close(fds, 2);
+		printf("exit status = %d\n", WEXITSTATUS(status));
 	return (WEXITSTATUS(status));
 	//ON EN EST LA!!!!
 }
@@ -94,7 +95,7 @@ int	pipex_bonus(char **av, t_data *data)
 {
 	(void)av;
 	(void)data;
-	printf("We\'re in Bonus ! It worked ! BONUUUUUUS\n");
+	printf("We\'re in Bonus! We made it! It worked! BONUUUUUUS\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -114,13 +115,29 @@ void	exe_cmd(t_data *data, int i)
 		check_close(&data->fd_out, 1);
 	}
 	cmd = ft_split_pipex(data->cmds[i], ' ');
+	for (int j = 0; j < 2; j++)
+	{
+		if (cmd[j])
+			printf("cmd[%d] = |%s|\n", j, cmd[j]);
+	}
 	if (!cmd)
 		err_exit("malloc error", "ft_split_pipex");
 	if (!*cmd)
 		path = 0;
 	else
 		path = get_cmd_path(*cmd, data->paths);
+	printf("path = %s\n", path);
 	exe_check_err(cmd, path, data->envp);
+}
+
+void	free_all(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
 void	exe_check_err(char **cmd, char *path, char **envp)
@@ -138,7 +155,7 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 	}
 	else if (execve(path, cmd, envp) == -1)
 	{
-		if (!access(path, X_OK | R_OK) && !is_directory(path))
+		if (!access(path, X_OK | R_OK) && open(path, O_DIRECTORY))
 			ret = 0;
 		else
 		{

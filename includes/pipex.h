@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 18:13:45 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/14 15:54:47 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,20 @@ typedef struct s_data
 }	t_data;
 
 /*
-**	FUNCTIONS
+**	PARSING FUNCTIONS
 */
 
 char 	*get_path(char **env);
 char	*get_mini_path(char *path, int *i);
 char	*get_cmd_path(char *cmd, char *paths);
 
+/*
+**	PIPE FUNCTIONS
+*/
+
 void	exe_cmd(t_data *data, int i);
 void	exe_check_err(char **cmd, char *path, char **envp);
+int	pipex(t_data *data);
+int	pipex_bonus(char **av, t_data *data);
 
 #endif

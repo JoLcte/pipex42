@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 18:05:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/09 17:45:42 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/15 21:01:04 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char	*ft_strchr(const char *s, char c)
 {
-	while (*s != c)
+	if (c == 0)
+		return ((char *)(s + ft_strlen(s)));
+	while (*s != c && *s)
 		++s;
 	if (*s == c)
-		return ((char *)s);
-	if (c == 0)
 		return ((char *)s);
 	return (NULL);
 }
