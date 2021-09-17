@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/17 22:38:52 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/17 22:45:39 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CFLAGS) -I libft/includes -I $(HEADER) -O3 -c $< -o $@
 	@echo "\e[38;5;104mCreated: $(@:%=%)"
 clean:
-	@rm -rf libft/*.o
+	@rm -rf libft/obj
 	@echo "\e[38;5;125mRemoved Libft Object Files"
 	@rm -rf $(OBJ_DIR)
 	@echo "\e[38;5;125mRemoved Object Files"
