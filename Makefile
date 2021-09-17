@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/15 17:11:26 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/17 22:38:52 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,34 @@ NAME = pipex
 CFLAGS = clang -Wall -Wextra -Werror
 LIBFLAGS = -L ./libft -lft
 
+HEADER = includes
 
-OBJ_DIR = obj
 SRC_DIR = src
+SRC_DIR_BONUS = src_bonus
+OBJ_DIR = obj
 
-SRC_F = parsing.c\
-	pipex.c\
+SRC_F = error.c \
+       	parsing.c \
+       	pipex.c \
+	utils.c \
 	main.c
+SRC_F_BONUS = error_bonus.c \
+	      parsing_bonus.c \
+	      pipex_bonus.c \
+	      utils_bonus.c \
+	      main_bonus.c
 
-SRC = $(addprefix $(SRC_DIR)/,$(SRC_F))
+ifdef	WITH_BONUS
+	CFLAGS += -D BONUS=1
+	SRC_DIR = $(SRC_DIR_BONUS)
+	SRC_F = $(SRC_F_BONUS)
+endif
+
+SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_F:%.c=%.o))
 
-HEADER = includes
+
+
 
 all: $(NAME)
 
@@ -52,8 +68,9 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "\e[38;5;161mRemoved - $(NAME) -"
 
-bonus: CCF += -D BONUS=1
-bonus: all
+bonus:	
+	$(MAKE) WITH_BONUS=1
+
 
 re: fclean all
 

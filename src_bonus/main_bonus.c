@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/17 21:15:34 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/17 22:41:01 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 static void	init_data(t_data *data, int bonus, char **av, char **envp)
 {
@@ -35,20 +35,7 @@ static void	init_data(t_data *data, int bonus, char **av, char **envp)
 		printf("pipex: could not initiate data.\n");
 		exit(EXIT_FAILURE);
 	}
-	//printf("data->paths = |%s|\n", data->paths);
-	//exit(EXIT_SUCCESS);
 }
-
-/*static int	error_init(int errno, char *cmd, char *file)
-{
-	const char *error = strerror(errno);
-	const int fd = dup(1);
-
-	dup2(1, 2);
-	printf("%s: %s: %s\n", cmd, file, error);
-	dup2(fd, 1);
-	return (EXIT_FAILURE);
-}*/
 
 int	main(int ac, char **av, char **envp)
 {
