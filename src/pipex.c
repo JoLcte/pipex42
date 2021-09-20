@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/17 20:38:45 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/20 19:25:36 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	pipex(t_data *data)
 	return (WEXITSTATUS(status));
 }
 
-int	pipex_bonus(t_data *data, int heredoc)
+int	pipex_bonus(t_data *data, char heredoc)
 {
 	if (heredoc)
 		printf("here is heredoc\n");

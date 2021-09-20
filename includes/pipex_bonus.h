@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/17 21:16:39 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/20 19:33:57 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ typedef struct s_buf
 typedef struct s_data
 {
 	char	**cmds;
-	char	*paths;
 	char	**envp;
+	char	*limiter;
+	char	*paths;
 	int	fd_in;
 	int	fd_out;
 	int	nb_cmd;
 	int	idx;
+	char	heredoc;
 }	t_data;
 
 /*
@@ -65,7 +67,7 @@ char 	*get_path(char **env);
 void	exe_check_err(char **cmd, char *path, char **envp);
 void	exe_cmd(t_data *data, int i);
 int	pipex(t_data *data);
-int	pipex_bonus(t_data *data, int heredoc);
+int	pipex_bonus(t_data *data, char heredoc);
 
 /*
 **	ERROR FUNCTIONS
