@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/19 17:58:56 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/14 16:01:23 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/21 22:36:38 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CCF) -I $(HEADER) -O3 -c $< -o $@
+	@$(CCF) -I $(HEADER) -c $< -o $@
 	@echo "\e[38;5;104mCreated: $(@:%=%)"
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/21 21:57:56 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/21 22:41:36 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*get_cmd_path(char *cmd, char *env_path)
 			if (path && !access(path, F_OK))
 				return (path);
 			free(path);
-			path = get_mini_path(env_path, &i);
+			path = get_next_path(env_path, &i);
 		}
 	}
 	//dans le cas ou cmd = /bin/echo pas besoin de strjoin

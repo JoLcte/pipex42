@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/17 22:45:39 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/21 22:36:18 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ $(NAME) : $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CFLAGS) -I libft/includes -I $(HEADER) -O3 -c $< -o $@
+	@$(CFLAGS) -I libft/includes -I $(HEADER) -c $< -o $@
 	@echo "\e[38;5;104mCreated: $(@:%=%)\e[m"
 clean:
 	@rm -rf libft/obj
