@@ -23,7 +23,9 @@ SRC_F = add_on_pipex.c \
 	ft_strncmp.c \
 	ft_strlcpy.c \
 	ft_strlen.c \
-        ft_strtrim.c	
+        ft_strtrim.c \
+	gnl.c \
+	gnl_utils.c
 
 SRC = $(addprefix $(SRC_DIR)/,$(SRC_F))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_F:%.c=%.o))

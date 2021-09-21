@@ -48,16 +48,15 @@ void	exe_cmd(t_data *data, int i)
 
 	if (!i)
 	{
-		dup2(data->fd_in, STDIN_FILENO);
-		if (check_close(&data->fd_in, 1))
+		if (data->heredoc)
+			if (dup2_close(data->fds_heredoc[0], STDIN_FILENO))
+				exit(EXIT_FAILURE);
+		if (dup2_close(data->fd_in, STDIN_FILENO))
 			exit(EXIT_FAILURE);
 	}
 	else if (i == data->nb_cmd - 1)
-	{
-		dup2(data->fd_out, STDOUT_FILENO);
-		if (check_close(&data->fd_out, 1))
+		if (dup2_close(data->fd_out, STDOUT_FILENO))
 			exit(EXIT_FAILURE);
-	}
 	cmd = ft_split_pipex(data->cmds[i], ' ');
 	if (!cmd)
 		err_exit("malloc error", "ft_split_pipex");
@@ -70,9 +69,9 @@ void	exe_cmd(t_data *data, int i)
 
 int	pipex(t_data *data)
 {
-	int fds[2];
-	int status;
-	pid_t pid;
+	int	fds[2];
+	int	status;
+	pid_t	pid;
 
 	status = 0;
 	data->idx = -1;
@@ -80,6 +79,7 @@ int	pipex(t_data *data)
 		err_exit(strerror(errno), "pipe");
 	while (++data->idx < data->nb_cmd)
 	{
+	fprintf(stderr, "coucou pipex\n");
 		pid = fork();
 		if (pid == -1)
 			err_exit(strerror(errno), "fork");
@@ -96,7 +96,6 @@ int	pipex(t_data *data)
 			if (check_close(fds, 2))
 				return (EXIT_FAILURE);
 		}
-		//waitpid(pid, &status, 0);
 		if (pipe(fds) == -1)
 			err_exit(strerror(errno), "pipe");
 	}
@@ -107,22 +106,34 @@ int	pipex(t_data *data)
 
 int	pipex_bonus(t_data *data, char heredoc)
 {
-	int len;
+	int	len;
+	char	*line;
+	int 	err;
 
 	if (heredoc)
 	{
+		if (pipe(data->fds_heredoc) == -1)
+			err_exit(strerror(errno), "pipe");
 		len = ft_strlen(data->limiter);
-		//while (1)
-		//{
-		//get_next_line(0, line);
-		//if (!ft_strncmp(data->limiter, *line, len);
-		//	exit
-		//write(data->fd_out);
-		//
-		//}
-		printf("here is heredoc\n");
-	}
-	else
-		return(pipex(data));
-	return (EXIT_SUCCESS);
+		while (1)
+		{
+			write(1, "> ", 2); 
+			err = get_next_line(0, &line);
+			if (!ft_strncmp(data->limiter, line, len) || err == -1)
+				break;
+			write(data->fds_heredoc[1], line, ft_strlen(line));
+			write(data->fds_heredoc[1], "\n", 1);
+			free(line);
 
+		}
+		if (err == -1)
+		{
+			if (line)
+				free(line);
+			err_exit("get_next_line error", "heredoc");	
+		}
+		if (check_close(&data->fds_heredoc[0], 1))
+			return (EXIT_FAILURE);
+	}
+	return (pipex(data));
+}

@@ -25,7 +25,7 @@
 # ifndef BONUS
 #  define BONUS 0
 # endif
-# ifndef BUSIZ
+# ifndef BUFSIZ
 #  define BUFSIZ 1024
 # endif
 
@@ -45,6 +45,7 @@ typedef struct s_data
 	char	**envp;
 	char	*limiter;
 	char	*paths;
+	int	fds_heredoc[2];
 	int	fd_in;
 	int	fd_out;
 	int	nb_cmd;

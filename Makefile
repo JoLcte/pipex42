@@ -55,7 +55,7 @@ $(NAME) : $(OBJ)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CFLAGS) -I libft/includes -I $(HEADER) -O3 -c $< -o $@
-	@echo "\e[38;5;104mCreated: $(@:%=%)"
+	@echo "\e[38;5;104mCreated: $(@:%=%)\e[m"
 clean:
 	@rm -rf libft/obj
 	@echo "\e[38;5;125mRemoved Libft Object Files"

@@ -79,4 +79,16 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 
+/*
+**	GET NEXT LINE
+*/
+
+int				get_l(int fd, char *buf, char **line);
+int				get_next_line(int fd, char **line);
+int				read_n_fill(int fd, char *buf, char **line);
+int				index_chr(char *s);
+char			*ft_cpy(char *dst, char *src, int len);
+char			*ft_join(char *dst, char *src, int len);
+
+
 #endif

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:25:36 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/20 19:37:27 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 void	exe_check_err(char **cmd, char *path, char **envp)
 {
@@ -107,8 +107,22 @@ int	pipex(t_data *data)
 
 int	pipex_bonus(t_data *data, char heredoc)
 {
+	int len;
+
 	if (heredoc)
+	{
+		len = ft_strlen(data->limiter);
+		printf("limiter = |%s|, size = %d\n", data->limiter, len);
+		//while (1)
+		//{
+		//get_next_line(0, line);
+		//if (!ft_strncmp(data->limiter, *line, len);
+		//	exit
+		//write(data->fd_out);
+		//
+		//}
 		printf("here is heredoc\n");
+	}
 	else
 		return(pipex(data));
 	return (EXIT_SUCCESS);

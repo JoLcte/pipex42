@@ -40,3 +40,11 @@ void	free_all(char **arr)
 		free(arr[i++]);
 	free(arr);
 }
+
+int	dup2_close(int fd_src, int fd_dst)
+{
+	dup2(fd_src, fd_dst);
+	if (check_close(&fd_src, 1))
+		return(EXIT_FAILURE);
+	return (0);
+}

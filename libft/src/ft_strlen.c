@@ -14,10 +14,9 @@
 
 int	ft_strlen(const char *s)
 {
-	int count;
+	const char	*save = s;
 
-	count = 0;
-	while (*s++)
-		count++;
-	return (count);
+	while (*s)
+		s++;
+	return (s - save);
 }
