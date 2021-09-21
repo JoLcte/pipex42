@@ -36,22 +36,21 @@ static void	check_error(t_data *data, int ac, int bonus)
 
 static void	init_data(t_data *data, int bonus, int ac, char **av)
 {
-	if (bonus && ft_strncmp("here_doc", av[1], 8))
+	data->heredoc = (ft_strncmp("here_doc", av[1], 8) == 0);
+	if (bonus && data->heredoc)
 	{
-		data->heredoc = 1;
 		data->limiter = av[1];
 		data->fd_in = 0;
 	}
 	else
 	{
-		data->heredoc = 0;
 		data->limiter = 0;
 		data->fd_in = open(av[1], O_RDONLY);
 	}
 	check_error(data, ac, bonus);
 	data.fd_out = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	data->paths = get_path(envp);
-	data->cmds = av + 2;
+	data->cmds = av + 2 + data->heredoc;
 	if (!data->fd_in == -1 || data->fd_out == -1 ||
 		!data->cmds || !data->paths || !data->envp)
 	{
@@ -64,10 +63,10 @@ int	main(int ac, char **av, char **envp)
 {
 	t_data data;
 
-	data.idx = 0;
-	data.nb_cmd = ac - 3;
 	data.envp = envp;
 	init_bonus(&data, BONUS, ac, av);	
+	data.nb_cmd = ac - 3 - data.heredoc;
+	data.idx = 0;
 	if (BONUS)
 		return (pipex_bonus(&data, data.heredoc));
 	else
