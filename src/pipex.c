@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:37:27 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/21 21:56:46 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	exe_cmd(t_data *data, int i)
 	if (!cmd)
 		err_exit("malloc error", "ft_split_pipex");
 	if (!*cmd)
-		path = 0;
+		path = NULL;
 	else
 		path = get_cmd_path(*cmd, data->paths);
 	exe_check_err(cmd, path, data->envp);

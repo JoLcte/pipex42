@@ -6,13 +6,13 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/17 17:35:05 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/21 21:57:56 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*get_mini_path(char *path, int *i)
+char	*get_next_path(char *path, int *i)
 {
 	const int j = *i;
 
@@ -54,7 +54,7 @@ char	*get_cmd_path(char *cmd, char *env_path)
 	path =	0;
 	if (!ft_strchr(cmd, '\''))
 	{
-		path = get_mini_path(env_path, &i);
+		path = get_next_path(env_path, &i);
 		while (path)
 		{
 			path = ft_strjoin(path, "/");

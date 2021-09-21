@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:33:39 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/21 21:58:22 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_data
 */
 
 char	*get_cmd_path(char *cmd, char *paths);
-char	*get_mini_path(char *path, int *i);
+char	*get_next_path(char *path, int *i);
 char 	*get_path(char **env);
 
 /*
