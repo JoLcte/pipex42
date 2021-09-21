@@ -20,15 +20,15 @@ SRC_DIR = src
 SRC_DIR_BONUS = src_bonus
 OBJ_DIR = obj
 
-SRC_F = error.c\
-       	parsing.c\
-       	pipex.c\
-	utils.c\
+SRC_F = error.c \
+       	parsing.c \
+       	pipex.c \
+	utils.c \
 	main.c
-SRC_F_BONUS = error_bonus.c\
-	      parsing_bonus.c\
-	      pipex_bonus.c\
-	      utils_bonus.c\
+SRC_F_BONUS = error_bonus.c \
+	      parsing_bonus.c \
+	      pipex_bonus.c \
+	      utils_bonus.c \
 	      main_bonus.c
 
 ifdef	WITH_BONUS
