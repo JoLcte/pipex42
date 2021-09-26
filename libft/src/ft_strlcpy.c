@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 18:05:46 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/08 14:45:51 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/25 15:05:03 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 
 	if (!dst || !src)
 		return (0);
-	while ((size > 1) && *src)
+	while (size && *src)
 	{
 		*dst++ = *src++;
-		size--;
+		--size;
 	}
 	if (size != 0)
 		*dst = '\0';

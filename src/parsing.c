@@ -6,13 +6,13 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/21 22:41:36 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/26 22:35:17 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*get_next_path(char *path, int *i)
+static char	*get_next_path(char *path, int *i)
 {
 	const int j = *i;
 
@@ -26,23 +26,6 @@ char	*get_next_path(char *path, int *i)
 		++*i;
 	}
 	return (path + j);
-}
-
-char	*get_path(char **env)
-{
-	while (*env)
-	{
-		if (!ft_strncmp("PATH=", *env, 5))
-			break;
-		++env;
-	}
-	if (*env)
-		return (*env + 5);
-	else
-	{
-		printf("env: PATH not found\n");
-		exit(EXIT_FAILURE);
-	}
 }
 
 char	*get_cmd_path(char *cmd, char *env_path)
@@ -70,4 +53,21 @@ char	*get_cmd_path(char *cmd, char *env_path)
 	else if (!access(cmd, F_OK))
 		path = cmd;
 	return (path);
+}
+
+char	*get_path(char **env)
+{
+	while (*env)
+	{
+		if (!ft_strncmp("PATH=", *env, 5))
+			break;
+		++env;
+	}
+	if (*env)
+		return (*env + 5);
+	else
+	{
+		printf("env: PATH not found\n");
+		exit(EXIT_FAILURE);
+	}
 }

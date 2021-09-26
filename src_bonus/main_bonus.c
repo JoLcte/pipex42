@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:32:43 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/26 22:47:33 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	check_error(t_data *data, int ac, int bonus)
 
 static void	init_data(t_data *data, int bonus, int ac, char **av)
 {
+	if (ac > 1)
 	data->heredoc = (ft_strncmp("here_doc", av[1], 8) == 0);
 	check_error(data, ac, bonus);
 	data->cmds = av + 2 + data->heredoc;
@@ -54,8 +55,11 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 		data->limiter = 0;
 		data->fd_in = open(av[1], O_RDONLY);
 	}
-	if (data->fd_in == -1 || data->fd_out == -1 ||
-		!data->cmds || !data->paths || !data->envp)
+	if (data->fd_in == -1)
+		err_exit(strerror(errno), av[1]);
+	if (data->fd_out == -1)
+		err_exit(strerror(errno), av[ac - 1]);
+	if (!data->cmds || !data->paths || !data->envp)
 	{
 		printf("pipex: could not initiate data.\n");
 		exit(EXIT_FAILURE);
@@ -65,11 +69,17 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 int	main(int ac, char **av, char **envp)
 {
 	t_data data;
+	int res;
 
 	data.envp = envp;
 	init_data(&data, BONUS, ac, av);
 	if (BONUS)
-		return (pipex_bonus(&data, data.heredoc));
+	{
+		res = (pipex_bonus(&data, data.heredoc));
+		if (data.heredoc)
+			close(data.fds[0]);
+	}
 	else
-		return (pipex(&data));
+		res = (pipex(&data));
+	return (res);
 }

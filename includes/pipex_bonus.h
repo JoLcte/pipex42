@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:33:57 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/26 22:33:54 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 typedef struct s_buf
 {
-	char 	*err;
+	char 	err[BUFSIZ];
 	int 	len;
 }	t_buf;
 
@@ -45,7 +45,7 @@ typedef struct s_data
 	char	**envp;
 	char	*limiter;
 	char	*paths;
-	int	fds_heredoc[2];
+	int	fds[2];
 	int	fd_in;
 	int	fd_out;
 	int	nb_cmd;
@@ -58,7 +58,6 @@ typedef struct s_data
 */
 
 char	*get_cmd_path(char *cmd, char *paths);
-char	*get_mini_path(char *path, int *i);
 char 	*get_path(char **env);
 
 /*

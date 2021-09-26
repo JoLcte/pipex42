@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/20 19:37:27 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/26 20:58:11 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ void	exe_cmd(t_data *data, int i)
 
 	if (!i)
 	{
-		if (data->heredoc)
-			if (dup2_close(data->fds_heredoc[0], STDIN_FILENO))
-				exit(EXIT_FAILURE);
 		if (dup2_close(data->fd_in, STDIN_FILENO))
 			exit(EXIT_FAILURE);
 	}
@@ -69,35 +66,34 @@ void	exe_cmd(t_data *data, int i)
 
 int	pipex(t_data *data)
 {
-	int	fds[2];
 	int	status;
 	pid_t	pid;
 
 	status = 0;
 	data->idx = -1;
-	if (pipe(fds) == -1)
+	if (pipe(data->fds) == -1)
 		err_exit(strerror(errno), "pipe");
 	while (++data->idx < data->nb_cmd)
 	{
-	fprintf(stderr, "coucou pipex\n");
 		pid = fork();
 		if (pid == -1)
 			err_exit(strerror(errno), "fork");
 		if (pid == 0)
 		{
-			dup2(fds[1], STDOUT_FILENO);
-			if (check_close(&fds[0], 1))
+			dup2(data->fds[1], STDOUT_FILENO);
+			if (check_close(&data->fds[0], 1))
 				return (EXIT_FAILURE);
 			exe_cmd(data, data->idx);
 		}
 		else
 		{
-			dup2(fds[0], STDIN_FILENO);
-			if (check_close(fds, 2))
+
+			dup2(data->fds[0], STDIN_FILENO);
+			if (check_close(data->fds, 2))
 				return (EXIT_FAILURE);
 		}
-		if (pipe(fds) == -1)
-			err_exit(strerror(errno), "pipe");
+		if (pipe(data->fds) == -1)
+			err_exit(strerror(errno), "pipe");	
 	}
 	while (data->idx--)
 		waitpid(-1, &status, 0);
@@ -112,7 +108,7 @@ int	pipex_bonus(t_data *data, char heredoc)
 
 	if (heredoc)
 	{
-		if (pipe(data->fds_heredoc) == -1)
+		if (pipe(data->fds) == -1)
 			err_exit(strerror(errno), "pipe");
 		len = ft_strlen(data->limiter);
 		while (1)
@@ -121,10 +117,9 @@ int	pipex_bonus(t_data *data, char heredoc)
 			err = get_next_line(0, &line);
 			if (!ft_strncmp(data->limiter, line, len) || err == -1)
 				break;
-			write(data->fds_heredoc[1], line, ft_strlen(line));
-			write(data->fds_heredoc[1], "\n", 1);
+			write(data->fds[1], line, ft_strlen(line));
+			write(data->fds[1], "\n", 1);
 			free(line);
-
 		}
 		if (err == -1)
 		{
@@ -132,7 +127,8 @@ int	pipex_bonus(t_data *data, char heredoc)
 				free(line);
 			err_exit("get_next_line error", "heredoc");	
 		}
-		if (check_close(&data->fds_heredoc[0], 1))
+		data->fd_in = data->fds[0];
+		if (check_close(&data->fds[1], 1))
 			return (EXIT_FAILURE);
 	}
 	return (pipex(data));
