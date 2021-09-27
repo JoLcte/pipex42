@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/26 22:46:11 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 15:09:57 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static char	*get_next_path(char *path, int *i)
 char	*get_cmd_path(char *cmd, char *env_path)
 {
 	char *path;
+	char *tmp;
 	int i;
 
 	i = 0;
@@ -40,9 +41,10 @@ char	*get_cmd_path(char *cmd, char *env_path)
 		path = get_next_path(env_path, &i);
 		while (path)
 		{
-			path = ft_strjoin(path, "/");
+			tmp = ft_strjoin(path, "/");
 			//on a des free loupes la
-			path = ft_strjoin(path, cmd);
+			path = ft_strjoin(tmp, cmd);
+			free(tmp);
 			if (path && !access(path, F_OK))
 				return (path);
 			free(path);

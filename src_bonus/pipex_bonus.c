@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/26 20:58:11 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 20:12:56 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 	if (!path)
 	{
 		if (ft_strchr(*cmd, '/'))
-			err_exit(strerror(errno), *cmd);
+			err_exit(strerror(errno), *cmd, 0);
 		else
-			err_exit("cmd not found", *cmd);
+			err_exit("command not found", *cmd, 0);
 		ret = 127;
 	}
 	else if (execve(path, cmd, envp) == -1)
@@ -31,8 +31,8 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 			ret = 0;
 		else
 		{
+			err_exit(strerror(errno), *cmd, 0);
 			ret = 126;
-			err_exit(strerror(errno), *cmd);
 		}
 	}
 	if (*cmd != path)
@@ -56,7 +56,7 @@ void	exe_cmd(t_data *data, int i)
 			exit(EXIT_FAILURE);
 	cmd = ft_split_pipex(data->cmds[i], ' ');
 	if (!cmd)
-		err_exit("malloc error", "ft_split_pipex");
+		err_exit("malloc error", "ft_split_pipex", 1);
 	if (!*cmd)
 		path = 0;
 	else
@@ -66,23 +66,26 @@ void	exe_cmd(t_data *data, int i)
 
 int	pipex(t_data *data)
 {
-	int	status;
 	pid_t	pid;
+	int	status;
+	int	nb_pids;
+	int	ret;
 
 	status = 0;
-	data->idx = -1;
+	nb_pids = 0;
 	if (pipe(data->fds) == -1)
-		err_exit(strerror(errno), "pipe");
+		err_exit(strerror(errno), "pipe", 1);
 	while (++data->idx < data->nb_cmd)
 	{
 		pid = fork();
+		++nb_pids;
 		if (pid == -1)
-			err_exit(strerror(errno), "fork");
+			err_exit(strerror(errno), "fork", 1);
 		if (pid == 0)
 		{
 			dup2(data->fds[1], STDOUT_FILENO);
 			if (check_close(&data->fds[0], 1))
-				return (EXIT_FAILURE);
+				return (0);
 			exe_cmd(data, data->idx);
 		}
 		else
@@ -90,14 +93,19 @@ int	pipex(t_data *data)
 
 			dup2(data->fds[0], STDIN_FILENO);
 			if (check_close(data->fds, 2))
-				return (EXIT_FAILURE);
+				return (0);
 		}
 		if (pipe(data->fds) == -1)
-			err_exit(strerror(errno), "pipe");	
+			err_exit(strerror(errno), "pipe", 1);	
 	}
-	while (data->idx--)
-		waitpid(-1, &status, 0);
-	return (WEXITSTATUS(status));
+	fprintf(stderr, "nb_pids = %d\n", nb_pids);
+	while (nb_pids--)
+	{
+		printf("hello\n");
+		if (waitpid(-1, &status, 0) == pid)
+			ret = WEXITSTATUS(status);
+	}
+	return (ret);
 }
 
 int	pipex_bonus(t_data *data, char heredoc)
@@ -109,7 +117,7 @@ int	pipex_bonus(t_data *data, char heredoc)
 	if (heredoc)
 	{
 		if (pipe(data->fds) == -1)
-			err_exit(strerror(errno), "pipe");
+			err_exit(strerror(errno), "pipe", 1);
 		len = ft_strlen(data->limiter);
 		while (1)
 		{
@@ -125,11 +133,11 @@ int	pipex_bonus(t_data *data, char heredoc)
 		{
 			if (line)
 				free(line);
-			err_exit("get_next_line error", "heredoc");	
+			err_exit("get_next_line error", "heredoc", 1);	
 		}
 		data->fd_in = data->fds[0];
 		if (check_close(&data->fds[1], 1))
-			return (EXIT_FAILURE);
+			return (0);
 	}
 	return (pipex(data));
 }

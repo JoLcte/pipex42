@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/26 22:47:33 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 14:30:50 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 	data->fd_out = open(av[ac - 1], O_WRONLY | O_CREAT |
 		(O_TRUNC * !data->heredoc) | (O_APPEND * data->heredoc), 0644);
 	data->nb_cmd = ac - 3 - data->heredoc;
-	data->idx = 0;
+	data->idx = -1;
 	if (bonus && data->heredoc)
 	{
 		data->limiter = av[2];
@@ -56,9 +56,15 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 		data->fd_in = open(av[1], O_RDONLY);
 	}
 	if (data->fd_in == -1)
-		err_exit(strerror(errno), av[1]);
+	{
+		++data->idx;
+		err_exit(strerror(errno), av[1], 0);
+	}
 	if (data->fd_out == -1)
-		err_exit(strerror(errno), av[ac - 1]);
+	{
+		--data->nb_cmd;
+		err_exit(strerror(errno), av[ac - 1], 0);
+	}
 	if (!data->cmds || !data->paths || !data->envp)
 	{
 		printf("pipex: could not initiate data.\n");

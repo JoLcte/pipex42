@@ -6,12 +6,12 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/23 21:51:54 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/27 18:17:11 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CFLAGS = clang -Wall -Wextra -Werror
+CFLAGS = clang -Wall -Wextra -Werror -g3
 LIBFLAGS = -L ./libft -lft
 
 HEADER = includes

@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/26 22:34:27 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 13:14:57 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	pipex_bonus(t_data *data, char heredoc);
 **	ERROR FUNCTIONS
 */
 
-void	err_exit(char *error, char *src);
+void	err_exit(char *error, char *src, char kill_pid);
 
 /*
 **	UTILS FUNCTIONS
