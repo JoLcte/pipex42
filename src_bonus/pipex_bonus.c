@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/27 20:12:56 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 23:09:21 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ void	exe_cmd(t_data *data, int i)
 
 	if (!i)
 	{
-		if (dup2_close(data->fd_in, STDIN_FILENO))
-			exit(EXIT_FAILURE);
+		if (data->fd_in == -1)
+			exit(0);
+		dup2(data->fd_in, STDIN_FILENO);
+		close(data->fd_in);
+		//if (dup2_close(data->fd_in, STDIN_FILENO))
+		//	exit(EXIT_FAILURE);
 	}
 	else if (i == data->nb_cmd - 1)
 		if (dup2_close(data->fd_out, STDOUT_FILENO))
@@ -84,7 +88,7 @@ int	pipex(t_data *data)
 		if (pid == 0)
 		{
 			dup2(data->fds[1], STDOUT_FILENO);
-			if (check_close(&data->fds[0], 1))
+			if (check_close(&data->fds[1], 1))
 				return (0);
 			exe_cmd(data, data->idx);
 		}
@@ -98,10 +102,9 @@ int	pipex(t_data *data)
 		if (pipe(data->fds) == -1)
 			err_exit(strerror(errno), "pipe", 1);	
 	}
-	fprintf(stderr, "nb_pids = %d\n", nb_pids);
+	check_close(data->fds, 2);
 	while (nb_pids--)
 	{
-		printf("hello\n");
 		if (waitpid(-1, &status, 0) == pid)
 			ret = WEXITSTATUS(status);
 	}

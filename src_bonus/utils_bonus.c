@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 20:16:23 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/25 23:22:47 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 22:36:56 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	check_close(int *fds, int size)
 	{
 		if (close(fds[size]))
 		{
+			fprintf(stderr, "on n'a pas pu close fd %d\n", fds[size]);
 			err = strerror(errno);
 			len = ft_strlen(err);
 			write(2, "pipex: ", 7);

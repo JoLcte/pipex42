@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/27 14:30:50 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/27 22:41:05 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 		data->fd_in = open(av[1], O_RDONLY);
 	}
 	if (data->fd_in == -1)
-	{
-		++data->idx;
 		err_exit(strerror(errno), av[1], 0);
-	}
 	if (data->fd_out == -1)
 	{
 		--data->nb_cmd;
