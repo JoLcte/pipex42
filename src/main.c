@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/30 19:33:03 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:06:14 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	init_data(t_data *data, int bonus, int ac, char **av)
 	if (data->fd_out == -1)
 	{
 		--data->nb_cmds;
-		err_exit(strerror(errno), av[ac - 1], 0);
+		err_exit(strerror(errno), av[ac - 1], 1);
 	}
 	if (!data->cmds || !data->paths || !data->envp)
 		err_exit("Data pointers could not be referenced", "init_data", 1);

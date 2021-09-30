@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   path_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/30 19:24:07 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:14:06 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	*get_path(char **env)
-{
-	while (*env)
-	{
-		if (!ft_strncmp("PATH=", *env, 5))
-			break ;
-		++env;
-	}
-	if (!*env)
-		err_exit("Variable PATH not found", "env", 1);
-	return (*env + 5);
-}
 
 static char	*get_next_path(char *path, int *i)
 {
@@ -71,4 +58,17 @@ char	*get_cmd_path(char *cmd, char *env_path)
 	else if (!access(cmd, F_OK))
 		path = cmd;
 	return (path);
+}
+
+char	*get_path(char **env)
+{
+	while (*env)
+	{
+		if (!ft_strncmp("PATH=", *env, 5))
+			break ;
+		++env;
+	}
+	if (!*env)
+		err_exit("Variable PATH not found", "env", 1);
+	return (*env + 5);
 }

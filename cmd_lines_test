@@ -1,0 +1,39 @@
+./pipex infile "pwd" "sed -e s/[aeio]/u/g" out
+
+./pipex infile "cat" "sed -e s/[aeio]/u/g" out
+
+./pipex infile "ls -a" "gre mlml" out
+
+./pipex notexist "ls -a" cat out
+
+./pipex notexist "ls -a" "pwd" out
+
+ln -s test2 && ./pipex infile cat "grep o" test2
+
+ln -s test2 && ./pipex test2 ls cat out
+
+ln -s Makefile test2 && ./pipex test2 ls cat out
+
+ln Makefile test2 && ./pipex test2 cat "grep o" out
+
+chmod 777 mo && ./pipex infile ls mo out
+
+chmod 777 mo && ./pipex infile ls ./mo out
+
+chmod 666 mo && ./pipex infile ls ./mo out
+
+chmod 666 mo && ./pipex infile ls mo out
+
+chmod 666 mo && ./pipex infile ls /mo out
+
+
+*** BONUS COMMAND LINES TEST ***
+
+./pipex infile cat echo pwd "wc -l" out
+
+# do ls -la to fill in XX 
+./pipex infile "ls -la" "grep 'Sep XX'" "wc -l" out
+
+./pipex here_doc EOF cat "grep 'hello you'" "wc -l" out
+
+./pipex here_doc EOF cat  "sed 's/l/e/g'" out

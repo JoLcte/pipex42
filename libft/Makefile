@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/19 17:58:56 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/25 17:49:59 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/30 23:53:52 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,19 +36,20 @@ all:	$(NAME)
 
 $(NAME): $(OBJ)
 	@ar -rc $(NAME) $(OBJ)
-	@echo "\e[38;5;38m- Libft Compilation Complete -"
+	@echo "\033[44m- Libft Compilation Completed -\033[m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CCF) -I $(HEADER) -c $< -o $@
-	@echo "\e[38;5;104mCreated: $(@:%=%)"
+	@echo "\033[0;36mCreating: $(@:%=%)\033[m"
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@echo "\e[38;5;125mRemoved Object Files"
+	@echo "\033[0;35mRemoving $(NAME) Object Files\033[m"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "\033[45mRemoving - $(NAME) -\033[m"
 
 re: fclean all
 

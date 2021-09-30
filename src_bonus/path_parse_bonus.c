@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_bonus.c                                    :+:      :+:    :+:   */
+/*   path_parse_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/30 17:53:07 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:14:30 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_cmd_path(char *cmd, char *env_path)
 
 	i = 0;
 	path = NULL;
-	if (!ft_strchr(cmd, '\''))
+	if (!ft_strchr(cmd, '/'))
 	{
 		path = get_next_path(env_path, &i);
 		while (path)

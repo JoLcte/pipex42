@@ -6,11 +6,40 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/30 19:50:28 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 23:12:21 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	init_heredoc(t_data *data)
+{
+	char	*line;
+	int		len;
+	int		err;
+
+	if (pipe(data->fds) == -1)
+		err_exit(strerror(errno), "pipe", 1);
+	len = ft_strlen(data->limiter);
+	while (1)
+	{
+		write(1, "> ", 2);
+		err = get_next_line(0, &line);
+		if (!ft_strncmp(data->limiter, line, len) || err == -1)
+			break ;
+		write(data->fds[1], line, ft_strlen(line));
+		write(data->fds[1], "\n", 1);
+		free(line);
+	}
+	if (err == -1)
+	{
+		if (line)
+			free(line);
+		err_exit("get_next_line error", "heredoc", 1);
+	}
+	data->fd_in = data->fds[0];
+	close(data->fds[1]);
+}
 
 /*
 **	--- Execve + error return code
@@ -32,11 +61,13 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 	}
 	else if (execve(path, cmd, envp) == -1)
 	{
-		if (access(path, X_OK | R_OK) || open(path, O_DIRECTORY) == -1)
-			ret = 126;
+		if (!access(path, X_OK | R_OK) && open(path, O_DIRECTORY) == -1)
+			ret = 0;
 		else
-			ret = 1;
-		err_exit(strerror(errno), *cmd, 0);
+		{
+			err_exit(strerror(errno), *cmd, 0);
+			ret = 126;
+		}
 	}
 	if (*cmd != path)
 		free(path);
@@ -79,11 +110,11 @@ void	exe_cmd(t_data *data, int i)
 **	--- Creation of pipes and forks
 */
 
-int	pipex(t_data *data)
+pid_t	pipex(t_data *data)
 {
 	pid_t	pid;
 
-	while (++data->idx < data->nb_cmds)
+	while (data->idx < data->nb_cmds)
 	{
 		if (pipe(data->fds) == -1)
 			err_exit(strerror(errno), "pipe", 1);
@@ -103,35 +134,7 @@ int	pipex(t_data *data)
 			close(data->fds[0]);
 			close(data->fds[1]);
 		}
+		++data->idx;
 	}
 	return (pid);
-}
-
-void	init_heredoc(t_data *data)
-{
-	char	*line;
-	int		len;
-	int		err;
-
-	if (pipe(data->fds) == -1)
-		err_exit(strerror(errno), "pipe", 1);
-	len = ft_strlen(data->limiter);
-	while (1)
-	{
-		write(1, "> ", 2);
-		err = get_next_line(0, &line);
-		if (!ft_strncmp(data->limiter, line, len) || err == -1)
-			break ;
-		write(data->fds[1], line, ft_strlen(line));
-		write(data->fds[1], "\n", 1);
-		free(line);
-	}
-	if (err == -1)
-	{
-		if (line)
-			free(line);
-		err_exit("get_next_line error", "heredoc", 1);
-	}
-	data->fd_in = data->fds[0];
-	close(data->fds[1]);
 }
