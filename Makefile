@@ -6,12 +6,12 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/30 19:42:24 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/30 20:38:27 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CFLAGS = clang -Wall -Wextra -Werror -g3
+CFLAGS = clang -Wall -Wextra -Werror
 LIBFLAGS = -L ./libft -lft
 
 HEADER = includes
@@ -39,32 +39,27 @@ SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC_F:%.c=%.o))
 
 
-
-
 all: $(NAME)
 
 
 $(NAME) : $(OBJ)
-	@echo "\e[38;5;38m *** Creating Libft Library ***"
+	@echo "\e[38;5;38m *** Compiling Libft Library ***"
 	@make -C libft
 	@$(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
-	@echo "\e[38;5;38m- Pipex Compilation Complete -"
+	@echo "\e[38;5;38m- Pipex Compilation Completed -"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CFLAGS) -I libft/includes -I $(HEADER) -c $< -o $@
-	@echo "\e[38;5;104mCreated: $(@:%=%)\e[m"
+	@echo "\e[38;5;104mCreating: $(@:%=%)\e[m"
+
 clean:
-	@rm -rf libft/obj
-	@echo "\e[38;5;125mRemoved Libft Object Files"
-	@rm -rf $(OBJ_DIR)
-	@echo "\e[38;5;125mRemoved Object Files"
+	@if [ -d libft/obj ]; then rm -rf libft/obj && echo "\e[38;5;125mRemoving Libft Object Files"; else echo "make: No libft objects to remove."; fi;
+	@if [ -d $(OBJ_DIR) ]; then rm -rf $(OBJ_DIR) && echo "\e[38;5;125mRemoving Object Files"; else echo "make: No $(NAME) objects to remove."; fi;
 
 fclean: clean
-	@rm -f libft/libft.a
-	@echo "\e[38;5;161mRemoved - Libft Library -\e[m"
-	@rm -f $(NAME)
-	@echo "\e[38;5;161mRemoved - $(NAME) -"
+	@if [ -f libft/libft.a ]; then rm -f libft/libft.a && echo "\e[38;5;161mRemoving - Libft Library -\e[m"; else echo "make: No libft to remove."; fi;
+	@if [ -f $(NAME) ]; then rm -f $(NAME) && echo "\e[38;5;161mRemoving - $(NAME) -"; else echo "make: No binary $(NAME) to remove."; fi;
 
 bonus:	
 	@$(MAKE) WITH_BONUS=1
