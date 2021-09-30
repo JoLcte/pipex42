@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_bonus.c                                    :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/29 15:57:18 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:24:07 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "pipex.h"
+
+char	*get_path(char **env)
+{
+	while (*env)
+	{
+		if (!ft_strncmp("PATH=", *env, 5))
+			break ;
+		++env;
+	}
+	if (!*env)
+		err_exit("Variable PATH not found", "env", 1);
+	return (*env + 5);
+}
 
 static char	*get_next_path(char *path, int *i)
 {
@@ -33,7 +46,6 @@ static char	*get_next_path(char *path, int *i)
 **	Note: if cmd is already set with the folder, we don't use ft_strjoin
 */
 
-
 char	*get_cmd_path(char *cmd, char *env_path)
 {
 	char	*path;
@@ -42,7 +54,7 @@ char	*get_cmd_path(char *cmd, char *env_path)
 
 	i = 0;
 	path = NULL;
-	if (!ft_strchr(cmd, '\''))
+	if (!ft_strchr(cmd, '/'))
 	{
 		path = get_next_path(env_path, &i);
 		while (path)
@@ -59,17 +71,4 @@ char	*get_cmd_path(char *cmd, char *env_path)
 	else if (!access(cmd, F_OK))
 		path = cmd;
 	return (path);
-}
-
-char	*get_path(char **env)
-{
-	while (*env)
-	{
-		if (!ft_strncmp("PATH=", *env, 5))
-			break;
-		++env;
-	}
-	if (!*env)
-		err_exit("Variable PATH not found", "env", 1);
-	return (*env + 5);
 }

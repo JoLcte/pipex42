@@ -6,7 +6,7 @@
 #    By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/15 23:17:06 by jlecomte          #+#    #+#              #
-#    Updated: 2021/09/27 18:17:11 by jlecomte         ###   ########.fr        #
+#    Updated: 2021/09/30 19:42:24 by jlecomte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,11 @@ SRC_DIR = src
 SRC_DIR_BONUS = src_bonus
 OBJ_DIR = obj
 
-SRC_F = error.c \
-       	parsing.c \
+SRC_F = path_parse.c \
        	pipex.c \
-	utils.c \
-	main.c
-SRC_F_BONUS = error_bonus.c \
-	      parsing_bonus.c \
+		utils.c \
+		main.c
+SRC_F_BONUS = path_parse_bonus.c \
 	      pipex_bonus.c \
 	      utils_bonus.c \
 	      main_bonus.c

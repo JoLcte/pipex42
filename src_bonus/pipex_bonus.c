@@ -6,16 +6,16 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/26 11:22:14 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/29 17:56:12 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:50:28 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
 /*
- **	--- Execve + error return code
- **	Note: if (*cmd == path) we must not free path as it is == cmd.
- */
+**	--- Execve + error return code
+**	Note: if (*cmd == path) we must not free path as it is == cmd.
+*/
 
 void	exe_check_err(char **cmd, char *path, char **envp)
 {
@@ -32,13 +32,11 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 	}
 	else if (execve(path, cmd, envp) == -1)
 	{
-		if (!access(path, X_OK | R_OK) && open(path, O_DIRECTORY) == -1)
-			ret = 0;
-		else
-		{
+		if (access(path, X_OK | R_OK) || open(path, O_DIRECTORY) == -1)
 			ret = 126;
-			err_exit(strerror(errno), *cmd, 0);
-		}
+		else
+			ret = 1;
+		err_exit(strerror(errno), *cmd, 0);
 	}
 	if (*cmd != path)
 		free(path);
@@ -47,8 +45,8 @@ void	exe_check_err(char **cmd, char *path, char **envp)
 }
 
 /*
- **	--- Creation of char **cmd and set up of the infile and outfile parameters
- */
+**	--- Creation of char **cmd and set up of the infile and outfile parameters
+*/
 
 void	exe_cmd(t_data *data, int i)
 {
@@ -62,7 +60,7 @@ void	exe_cmd(t_data *data, int i)
 		dup2(data->fd_in, STDIN_FILENO);
 		close(data->fd_in);
 	}
-	else if (i == data->nb_cmd - 1)
+	else if (i == data->nb_cmds - 1)
 	{
 		dup2(data->fd_out, STDOUT_FILENO);
 		close(data->fd_out);
@@ -78,79 +76,62 @@ void	exe_cmd(t_data *data, int i)
 }
 
 /*
- **	--- Creation of pipes and forks
- */
+**	--- Creation of pipes and forks
+*/
 
 int	pipex(t_data *data)
 {
 	pid_t	pid;
-	int		exit_status;
-	int		nb_pids;
-	int		ret;
 
-	exit_status = 0;
-	nb_pids = 0;
-	while (++data->idx < data->nb_cmd)
+	while (++data->idx < data->nb_cmds)
 	{
-	if (pipe(data->fds) == -1)
-		err_exit(strerror(errno), "pipe", 1);
+		if (pipe(data->fds) == -1)
+			err_exit(strerror(errno), "pipe", 1);
 		pid = fork();
-		++nb_pids;
+		++data->nb_pids;
 		if (pid == -1)
 			err_exit(strerror(errno), "fork", 1);
 		if (pid == 0)
 		{
 			dup2(data->fds[1], STDOUT_FILENO);
-			close(data->fds[1]);
+			close(data->fds[0]);
 			exe_cmd(data, data->idx);
 		}
 		else
 		{
-
 			dup2(data->fds[0], STDIN_FILENO);
 			close(data->fds[0]);
 			close(data->fds[1]);
 		}
 	}
-	//close(data->fds[0]);
-	//close(data->fds[1]);
-	while (nb_pids--)
-	{
-		if (waitpid(-1, &exit_status, 0) == pid)
-			ret = WEXITSTATUS(exit_status);
-	}
-	return (ret);
+	return (pid);
 }
 
-int	pipex_bonus(t_data *data, char heredoc)
+void	init_heredoc(t_data *data)
 {
 	char	*line;
 	int		len;
 	int		err;
 
-	if (heredoc)
+	if (pipe(data->fds) == -1)
+		err_exit(strerror(errno), "pipe", 1);
+	len = ft_strlen(data->limiter);
+	while (1)
 	{
-		if (pipe(data->fds) == -1)
-			err_exit(strerror(errno), "pipe", 1);
-		len = ft_strlen(data->limiter);
-		while (1)
-		{
-			write(1, "> ", 2);
-			err = get_next_line(0, &line);
-			if (!ft_strncmp(data->limiter, line, len) || err == -1)
-				break;
-			write(data->fds[1], line, ft_strlen(line));
-			write(data->fds[1], "\n", 1);
-			free(line);
-		}
-		if (err == -1)
-		{
-			if (line)
-				free(line);
-			err_exit("get_next_line error", "heredoc", 1);
-		}
-		data->fd_in = data->fds[0];
-		close(data->fds[1]);
+		write(1, "> ", 2);
+		err = get_next_line(0, &line);
+		if (!ft_strncmp(data->limiter, line, len) || err == -1)
+			break ;
+		write(data->fds[1], line, ft_strlen(line));
+		write(data->fds[1], "\n", 1);
+		free(line);
 	}
-	return (pipex(data));
+	if (err == -1)
+	{
+		if (line)
+			free(line);
+		err_exit("get_next_line error", "heredoc", 1);
+	}
+	data->fd_in = data->fds[0];
+	close(data->fds[1]);
 }

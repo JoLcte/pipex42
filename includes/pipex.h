@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 10:16:35 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/27 13:14:57 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:54:25 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 typedef struct s_buf
 {
-	char 	err[BUFSIZ];
-	int 	len;
+	char	err[BUFSIZ];
+	int		len;
 }	t_buf;
 
 typedef struct s_data
@@ -45,12 +45,13 @@ typedef struct s_data
 	char	**envp;
 	char	*limiter;
 	char	*paths;
-	int	fds[2];
-	int	fd_in;
-	int	fd_out;
-	int	nb_cmd;
-	int	idx;
-	char	heredoc;
+	int		fds[2];
+	int		fd_in;
+	int		fd_out;
+	int		heredoc;
+	int		idx;
+	int		nb_cmds;
+	int		nb_pids;
 }	t_data;
 
 /*
@@ -58,7 +59,7 @@ typedef struct s_data
 */
 
 char	*get_cmd_path(char *cmd, char *paths);
-char 	*get_path(char **env);
+char	*get_path(char **env);
 
 /*
 **	PIPE FUNCTIONS
@@ -66,20 +67,14 @@ char 	*get_path(char **env);
 
 void	exe_check_err(char **cmd, char *path, char **envp);
 void	exe_cmd(t_data *data, int i);
-int	pipex(t_data *data);
-int	pipex_bonus(t_data *data, char heredoc);
-
-/*
-**	ERROR FUNCTIONS
-*/
-
-void	err_exit(char *error, char *src, char kill_pid);
+void	init_heredoc(t_data *data);
+pid_t	pipex(t_data *data);
 
 /*
 **	UTILS FUNCTIONS
 */
 
-int	check_close(int *fds, int size);
+void	err_exit(char *error, char *src, char kill_pid);
 void	free_all(char **arr);
 
 #endif
