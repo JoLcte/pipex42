@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 08:24:04 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/26 22:35:17 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/29 19:15:09 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,47 @@
 
 static char	*get_next_path(char *path, int *i)
 {
-	const int j = *i;
+	const int	j = *i;
 
-	if (!path[*i])
-		return (0);
-	while (path[*i] != ':')
+	if (!path[j])
+		return (NULL);
+	while (path[*i] != ':' && path[*i])
 		++*i;
 	if (path[*i])
 	{
-		path[*i] = 0;
+		path[*i] = '\0';
 		++*i;
 	}
 	return (path + j);
 }
 
+/*
+**	--- Creation of the path/cmd for execve
+**	Note: if cmd is already set with the folder, we don't use ft_strjoin
+*/
+
 char	*get_cmd_path(char *cmd, char *env_path)
 {
-	char *path;
-	int i;
+	char	*path;
+	char	*tmp;
+	int		i;
 
 	i = 0;
-	path =	0;
+	path = NULL;
 	if (!ft_strchr(cmd, '\''))
 	{
 		path = get_next_path(env_path, &i);
 		while (path)
 		{
-			path = ft_strjoin(path, "/");
-			//on a des free loupes la
-			path = ft_strjoin(path, cmd);
+			tmp = ft_strjoin(path, "/");
+			path = ft_strjoin(tmp, cmd);
+			free(tmp);
 			if (path && !access(path, F_OK))
 				return (path);
 			free(path);
 			path = get_next_path(env_path, &i);
 		}
 	}
-	//dans le cas ou cmd = /bin/echo pas besoin de strjoin
 	else if (!access(cmd, F_OK))
 		path = cmd;
 	return (path);
@@ -60,14 +65,10 @@ char	*get_path(char **env)
 	while (*env)
 	{
 		if (!ft_strncmp("PATH=", *env, 5))
-			break;
+			break ;
 		++env;
 	}
-	if (*env)
-		return (*env + 5);
-	else
-	{
-		printf("env: PATH not found\n");
-		exit(EXIT_FAILURE);
-	}
+	if (!*env)
+		err_exit("Variable PATH not found", "env", 1);
+	return (*env + 5);
 }

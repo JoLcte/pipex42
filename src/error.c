@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 20:14:55 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/25 15:05:47 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/29 19:11:11 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	buf_dwrite(t_buf *buf, char *src, int fd)
 {
-	int n;
-	int free_space;
+	int	n;
+	int	free_space;
 
 	n = ft_strlen(src);
 	free_space = BUFSIZ - buf->len;
@@ -32,21 +32,22 @@ static void	buf_dwrite(t_buf *buf, char *src, int fd)
 	if (n)
 		ft_strlcpy(buf->err + buf->len, src, n);
 	buf->len += n;
-	buf->err[buf->len] = 0;
 }
 
-void	err_exit(char *error, char *src)
+void	err_exit(char *error, char *src, char kill_pid)
 {
-	t_buf buf;
+	t_buf	buf;
+
 	buf.len = 0;
 	buf_dwrite(&buf, "pipex: ", 2);
-	buf_dwrite(&buf, error, 2);
-	buf_dwrite(&buf, ": ", 2);
 	buf_dwrite(&buf, src, 2);
+	buf_dwrite(&buf, ": ", 2);
+	buf_dwrite(&buf, error, 2);
 	if (buf.len)
 	{
 		write(2, buf.err, buf.len);
 		write(2, "\n", 1);
 	}
-	exit(EXIT_FAILURE);
+	if (kill_pid)
+		exit(EXIT_FAILURE);
 }
