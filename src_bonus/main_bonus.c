@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 14:55:39 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/09/30 19:35:45 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:45:58 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int ac, char **av, char **envp)
 		init_heredoc(&data);
 	last_pid = pipex(&data);
 	if (data.heredoc)
-			close(data.fds[0]);
+		close(data.fds[0]);
 	while (data.nb_pids)
 	{
 		if (waitpid(-1, &exit_status, 0) == last_pid)
