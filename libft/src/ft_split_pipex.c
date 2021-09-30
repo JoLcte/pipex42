@@ -6,7 +6,7 @@
 /*   By: jlecomte <jlecomte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 16:14:51 by jlecomte          #+#    #+#             */
-/*   Updated: 2021/08/31 17:39:15 by jlecomte         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:42:31 by jlecomte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	count_wd(char const *s, char c)
 	count = 0;
 	while (*s)
 	{
-		while (*s  && *s != c)
+		while (*s && *s != c)
 			++s;
 		count++;
 		while (*s && *s == c)
