@@ -46,7 +46,7 @@ $(NAME) : $(OBJ)
 	@echo "\033[44m *** Compiling Libft Library ***\033[m"
 	@make -C libft
 	@$(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
-	@echo "\033[44m- Pipex Compilation Completed -\033[m"
+	@echo "\033[44m- $(NAME) Compilation Completed -\033[m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
