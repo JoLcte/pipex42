@@ -37,6 +37,7 @@ void	init_heredoc(t_data *data)
 			free(line);
 		err_exit("get_next_line error", "heredoc", 1);
 	}
+	free(line);
 	data->fd_in = data->fds[0];
 	close(data->fds[1]);
 }
